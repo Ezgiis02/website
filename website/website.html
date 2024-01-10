@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yemek Tarifleri</title>
+    <style>
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+        }
+
+        /* Modal içeriği için stil */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 40px;
+            border: 1px solid #888;
+            width: 20%;
+            height: 250px;
+        }
+
+        /* Kapatma düğmesi için stil */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        /* Kapatma düğmesi üzerine gelindiğinde stil */
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        
+        
+        .slider {
+            position: relative;
+            width: 1000px;
+            height:300px;
+            border: 1px solid #ccc;
+            margin: auto;
+            overflow: hidden;
+        }
+        
+        .slider-content {
+            position: absolute;
+            width: 250%;
+            left: 0;
+            
+            animation: slide 9s infinite ;
+        }
+        .slider-content:hover {
+            animation-play-state: paused;
+        }
+        
+        .slider-item{
+           width: 20%; 
+           float: left;
+        }
+        
+        @keyframes slide{
+            0% {
+              transform: translateX(0px);
+            }
+            20% {
+              transform: translateX(-350px);
+            }
+            40% {
+              transform: translateX(-350px);
+            }
+            60% {
+              transform: translateX(-700px);
+            }
+            
+            80% {
+              transform: translateX(-700px);
+            }
+            
+            100% {
+              transform: translateX(-1050px);
+            }
+        
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #e5a4b2;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #logo {
+            max-width: 100px;
+            height: auto;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-bar {
+            margin: 20px 0;
+            padding: 20px;
+            height: 40px;
+            background-color: #e5a4b2;
+            text-align: center;
+        }
+       
+    
+        section {
+            margin: 20px;
+        }
+
+        .recipe-category {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .recipe-category a {
+            text-decoration: none;
+            padding: 10px 15px;
+            border: 1px solid #e5a4b2;
+            border-radius: 5px;
+            color: #e5a4b2;
+            background-color: #fff;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .recipe-category a:hover {
+            background-color: #e5a4b2;
+            color: #fff;
+        }
+
+        .recipe-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .recipe-item {
+            max-width: 200px;
+            text-align: center;
+        }
+
+        .recipe-item img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .comments-section {
+            margin-top: 20px;
+        }
+
+        footer {
+            background-color: #7c6078;
+            color: #e5e5e5;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .social-media-icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .social-media-icons img {
+            max-width: 30px;
+            height: auto;
+        }
+
+        .contact-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button#loginButton {
+            background-color: #4caf50;
+            color: #fff;
+        }
+
+        button#signupButton {
+            background-color: #ff9800;
+            color: #fff;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="img/Chef’in Tarifleri.png" alt="Logo" id="logo">
+    <section class="search-bar">
+        <input type="text" placeholder="Yemek Ara">
+        <button>Ara</button>
+    </section>
+    <div class="user-actions">
+        <button onclick="showLoginForm()">Üye Giriş</button>
+        <button onclick="showSignupForm()">Üye Ol</button>
+    </div>
+    
+</header>
+
+<div id="myModal" class="modal">
+    <!-- Modal içeriği -->
+    <div class="modal-content">
+        <!-- Kapatma düğmesi -->
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2><center>Üye Girişi</center></h2>
+        <center><label for="email">E-posta:</label></center>
+        <center><input type="text" id="email" name="email"><br></center>
+        <p></p>
+        <center><label for="password">Şifre:</label></center>
+        <center><input type="password" id="password" name="password"><br></center>
+        <p></p>
+        <center><button onclick="submitLogin()">Giriş Yap</button></center>
+    </div>
+</div>
+
+<div id="signupModal" class="modal">
+    <!-- Üye Ol Modal içeriği -->
+    <div class="modal-content">
+        <!-- Kapatma düğmesi -->
+        <span class="close" onclick="closeSignupModal()">&times;</span>
+        <h2><center>Üye Ol</center></h2>
+        <center><label for="signupEmail">E-posta:</label></center>
+        <center><input type="text" id="signupEmail" name="signupEmail"><br></center>
+        <p></p>
+        <center><label for="signupname">Kullanıcı Adı:</label></center>
+        <center><input type="signupname" id="signupname" name="signupname"><br></center>
+        <p></p>
+        <center><label for="signupPassword">Şifre:</label></center>
+        <center><input type="password" id="signupPassword" name="signupPassword"><br></center>
+        <p></p>
+        <center><button onclick="submitSignup()">Üye Ol</button></center>
+    </div>
+</div>
+
+<section class="recipe-category">
+    <a href="corbalar.html" id="corbalarLink">Çorbalar</a>
+    <a href="anayemekler.html" id="anayemeklerLink">Ana Yemekler</a>
+    <a href="tatlilar.html" id="tatlilarLink">Tatlılar</a>
+    <a href="kahvaltiliklar.html" id="kahvaltiliklarLink">Kahvaltılıklar</a>
+    <a href="icecekler.html" id="iceceklerLink">İçecekler</a>
+</section>
+
+<section>
+    <h2><center>Son Eklenenler</center></h2>
+    <div class="slider">
+        <div class="slider-content">
+            <div class="slider-item">
+                <a href="corbalar.html">
+                    <img src="img/Ç2.png" alt="">
+                </a>
+            </div>
+            <div class="slider-item">
+                <a href="anayemekler.html">
+                    <img src="img/AY2.png" alt="">
+                </a>
+                
+            </div>
+            <div class="slider-item">
+                <a href="icecekler.html">
+                    <img src="img/İ2.png" alt="">
+                </a>
+                
+            </div>
+            <div class="slider-item">
+                <a href="kahvaltiliklar.html">
+                    <img src="img/K2.png" alt="">
+                </a>
+                
+            </div>
+        
+        
+        </div>
+    </div>
+</section>
+
+
+
+<section>
+    <h2><center>En Çok Ziyaret Edilenler</center></h2>
+    <div class="slider">
+        <div class="slider-content">
+            <div class="slider-item">
+                <a href="tatlilar.html">
+                    <img src="img/T2.png" alt="">
+                </a>
+            </div>
+            <div class="slider-item">
+                <a href="icecekler.html">
+                    <img src="img/İ1.png" alt="">
+                </a>
+            </div>
+            <div class="slider-item">
+                <a href="corbalar.html">
+                    <img src="img/Ç1.png" alt="">
+                </a>
+            </div>
+            <div class="slider-item">
+                <a href="kahvaltiliklar.html">
+                    <img src="img/K1.png" alt="">
+                </a>
+            </div>
+        
+        </div>
+    </div>
+</section>
+
+<section class="comments-section">
+    
+    <!-- Yorumlar Buraya Gelecek -->
+</section>
+
+<footer>
+    <div class="social-media-icons">
+        <a href="#"><img src="img/pngwing.com (3).png" alt="Instagram"></a>
+        <a href="#"><img src="img/pngwing.com (1).png" alt="Facebook"></a>
+        <a href="#"><img src="img/pngwing.com (2).png" alt="Twitter"></a>
+    </div>
+    <div class="contact-form">
+        <h2>İletişime Geçin</h2>
+        <form>
+            <label for="email">E-posta:</label>
+            <input type="email" id="email" name="email" required>
+            <p></p>
+            <label for="message">Mesajınız:</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+            <p></p>
+            <center><button type="submit">Gönder</button></center>
+        </form>
+    </div>
+</footer>
+
+<script>
+    function showLoginForm() {
+       document.getElementById("myModal").style.display="block";
+    }
+    function closeModal() {
+        // Modalı gizle
+        document.getElementById("myModal").style.display = "none";
+    }
+
+    function submitLogin() {
+        // Burada giriş işlemlerini gerçekleştirebilirsiniz
+        // Örneğin, form verilerini alıp bir API'ye gönderebilirsiniz
+        alert("Giriş başarılı!");
+        closeModal();
+    }
+    window.onclick = function(event) {
+        var modal = document.getElementById("myModal");
+        if (event.target === modal) {
+            closeModal();
+        }
+    }
+    
+    function showSignupForm() {
+        // Üye Ol formunu göstermek için gerekli işlemler
+    }
+
+    function showSignupForm() {
+        document.getElementById("signupModal").style.display = "block";
+    }
+
+    function closeSignupModal() {
+        document.getElementById("signupModal").style.display = "none";
+    }
+
+    function submitSignup() {
+        // Burada üye olma işlemlerini gerçekleştirebilirsiniz
+        // Örneğin, form verilerini alıp bir API'ye gönderebilirsiniz
+        alert("Üye olma başarılı!");
+        closeSignupModal();
+    }
+
+    window.onclick = function(event) {
+        var signupModal = document.getElementById("signupModal");
+        if (event.target === signupModal) {
+            closeSignupModal();
+        }
+    }
+
+    function corbalarSayfasinaYonlendir(){
+        window.location.href="corbalar.html"
+    }
+    document.getElementById("corbalarLink").addEventListener("click",corbalarSayfasinaYonlendir)
+
+    function anayemeklerSayfasinaYonlendir(){
+        window.location.href="anayemekler.html"
+    }
+    document.getElementById("anayemeklerLink").addEventListener("click",anayemeklerSayfasinaYonlendir)
+
+    function tatlilarSayfasinaYonlendir(){
+        window.location.href="tatlilar.html"
+    }
+    document.getElementById("tatlilarLink").addEventListener("click",tatlilarSayfasinaYonlendir)
+
+    function kahvaltiliklarSayfasinaYonlendir(){
+        window.location.href="kahvaltiliklar.html"
+    }
+    document.getElementById("kahvaltiliklarLink").addEventListener("click",kahvaltiliklarSayfasinaYonlendir)
+
+    function iceceklerSayfasinaYonlendir(){
+        window.location.href="icecekler.html"
+    }
+    document.getElementById("iceceklerLink").addEventListener("click",iceceklerSayfasinaYonlendir)
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>

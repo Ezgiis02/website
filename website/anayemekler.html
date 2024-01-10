@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ana Yemekler</title>
+
+    <style>
+         .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.7);
+        }
+
+        /* Modal içeriği için stil */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 40px;
+            border: 1px solid #888;
+            width: 20%;
+            height: 250px;
+        }
+
+        /* Kapatma düğmesi için stil */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        /* Kapatma düğmesi üzerine gelindiğinde stil */
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #e5a4b2;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #logo {
+            max-width: 100px;
+            height: auto;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-bar {
+            margin: 20px 0;
+            padding: 20px;
+            height: 40px;
+            background-color: #e5a4b2;
+            text-align: center;
+        }
+       
+    
+        section {
+            margin: 20px;
+        }
+
+        .recipe-category {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .recipe-category a {
+            text-decoration: none;
+            padding: 10px 15px;
+            border: 1px solid #e5a4b2;
+            border-radius: 5px;
+            color: #e5a4b2;
+            background-color: #fff;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .recipe-category a:hover {
+            background-color: #e5a4b2;
+            color: #fff;
+        }
+
+        .recipe-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .recipe-item {
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(8, 8, 8, 0.1);
+            
+        }
+
+        .recipe-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .recipe-item h3 {
+            margin-top: 20px;
+            color:#400235
+        }
+
+        .recipe-item ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: left;
+            margin-top: 15px;
+        }
+
+        .recipe-item ul li {
+            margin-bottom: 5px;
+        }
+
+        .recipe-item h2 {
+            margin-top: 15px;
+            color:#e5a4b2
+        }
+
+        .comments-section {
+            margin-top: 20px;
+        }
+
+        footer {
+            background-color: #7c6078;
+            color: #e5e5e5;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .social-media-icons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .social-media-icons img {
+            max-width: 30px;
+            height: auto;
+        }
+
+        .contact-form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button#loginButton {
+            background-color: #4caf50;
+            color: #fff;
+        }
+
+        button#signupButton {
+            background-color: #ff9800;
+            color: #fff;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+    </style>
+
+
+
+
+</head>
+<body>
+    <header>
+        <a href="site1.html">
+            <img src="img/Chef’in Tarifleri.png" alt="Logo" id="logo">
+        </a>
+        <section class="search-bar">
+            <input type="text" placeholder="Yemek Ara">
+            <button>Ara</button>
+        </section>
+        <div class="user-actions">
+            <button onclick="showLoginForm()">Üye Giriş</button>
+            <button onclick="showSignupForm()">Üye Ol</button>
+        </div>
+        
+    </header>
+
+    <div id="myModal" class="modal">
+        <!-- Modal içeriği -->
+        <div class="modal-content">
+            <!-- Kapatma düğmesi -->
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2><center>Üye Girişi</center></h2>
+            <center><label for="email">E-posta:</label></center>
+            <center><input type="text" id="email" name="email"><br></center>
+            <p></p>
+            <center><label for="password">Şifre:</label></center>
+            <center><input type="password" id="password" name="password"><br></center>
+            <p></p>
+            <center><button onclick="submitLogin()">Giriş Yap</button></center>
+        </div>
+    </div>
+    
+    <div id="signupModal" class="modal">
+        <!-- Üye Ol Modal içeriği -->
+        <div class="modal-content">
+            <!-- Kapatma düğmesi -->
+            <span class="close" onclick="closeSignupModal()">&times;</span>
+            <h2><center>Üye Ol</center></h2>
+            <center><label for="signupEmail">E-posta:</label></center>
+            <center><input type="text" id="signupEmail" name="signupEmail"><br></center>
+            <p></p>
+            <center><label for="signupname">Kullanıcı Adı:</label></center>
+            <center><input type="signupname" id="signupname" name="signupname"><br></center>
+            <p></p>
+            <center><label for="signupPassword">Şifre:</label></center>
+            <center><input type="password" id="signupPassword" name="signupPassword"><br></center>
+            <p></p>
+            <center><button onclick="submitSignup()">Üye Ol</button></center>
+        </div>
+    </div>
+    
+    <section class="recipe-category">
+        <a href="corbalar.html" id="corbalarLink">Çorbalar</a>
+        <a href="anayemekler.html" id="anayemeklerLink">Ana Yemekler</a>
+        <a href="tatlilar.html" id="tatlilarLink">Tatlılar</a>
+        <a href="kahvaltiliklar.html" id="kahvaltiliklarLink">Kahvaltılıklar</a>
+        <a href="icecekler.html" id="iceceklerLink">İçecekler</a>
+    </section>
+    
+    <section class="recipe-list">
+        <div class="recipe-item">
+            <img src="img/AY1.png" alt="Anayemek Adı 1">
+            <h3>Ev Yapımı Beyti Sarma </h3>
+            <p></p>
+            <h2><b>Malzemeler</b></h2>
+            <p></p>
+            <ul>
+                <li>1 adet soğan</li>
+                <li>3 diş sarımsak</li>
+                <li>1 çay bardağı galeta unu</li>
+                <li>1 adet yumurta</li>
+                <li>1,5 çay kaşığı tuz</li>
+                <li>1 çay kaşığı karabiber</li>
+                <li>1 çay kaşığı pul biber</li>
+                <li>500 gram dana kıyma(az yağlı)</li>
+                <li>1/2 demet ince kyılmış maydonoz</li>
+                <li>5 adet yufka(digdörtgen kesilmiş)</li>
+                <li>2 yemek kaşığı tereyağı</li>
+                <li>1,5 yemek kaşığı dometes salçası</li>
+                <li>1/2 çay kaşığı tuz</li>
+                <li>1 avuç kıyılmış maydonoz</li>
+                <li>2 yemek kaşığı süzme yoğurt</li>
+            </ul>
+            <p></p>
+            <h2><b>Yapılışı:</b></h2>
+            <p></p>
+            <ul>
+                <li>Soğan, sarımsak, galeta unu, yumurta, tuz, karabiber ve pul biberi robottan geçirip bir harç haline getirin.</li>
+                <li>Tüm köfte malzemelerini bir kabın içerisine alın. Malzemeler birbirleriyle bütünleşene kadar güzelce yoğurun. Yoğurduktan sonra üzerini streç filmle sararak buzdolabında 20 dakika dinlendirin. Salçalı  sosun malzemelerini bir tencereye alın ve koyulaşana kadar pişirin.</li>
+                <li>Dinlenen köfte  harcından orta boylarda bir kebaba yetecek kadar et alın. Hafif kalın olacak şekilde kebap gibi uzunlanmasına bir şekil verin.</li>
+                <li>Dikdörtgen kestiğiniz yufkalardan birini tezgaha serin ve köftelerden birini yerleştirin. Salçalı sostan yufkaya sürün ve ardından yufkayı köfteye sarın. Tüm köfteler bitene kadar aynı işlemi uygulayın.</li>
+                <li>Sardığınız köfteleri orta kalınlıkta olacak şekilde dilimleyin. Pişirme kağıdı serili fırın tepsisine aktarın ve 190 derecede ısıtılmış fırında kontrollü bir biçimde 30 dakika kadar pişirin.</li>
+                <li>Pişen beyti sarmaları sunum tabağının kenarına doğru bir çember oluşturacak şekilde dizin. Üzerlerine salçalı sosu gezdirin.</li>
+                <li>Son olarak tabağın ortasına yoğurt koyup maydanoz serpiştirin ve sarmaları servis edin. Afiyet olsun!</li>
+                
+                
+            </ul>
+        </div>
+        <br>
+        
+
+        <div class="recipe-item">
+            <img src="img/AY2.png" alt="Anayemek Adı 2">
+            <h3>Borcamda Brokoli Mücveri</h3>
+            <p></p>
+            <h2><b>Malzemeler</b></h2>
+            <p></p>
+            <ul>
+                <li>500 gram brokoli</li>
+                <li>5 adet taze soğan</li>
+                <li>1/2 demet dereotu</li>
+                <li>3 yumurta</li>
+                <li>200 gram kaşar peyniri</li>
+                <li>100 gram beyaz peynir</li>
+                <li>1 çay kaşığı karabiber</li>
+                <li>2 çay kaşığı kimyon</li>
+                <li>1 çay kaşığı tuz</li>
+                <li>1 çay kaşığı pul biber</li>
+                <li>1,5 yemek kaşığı un</li>
+                
+            </ul>
+            <p></p>
+            <h2><b>Yapılışı:</b></h2>
+            <p></p>
+            <ul>
+                <li>Brokolileri saplarını eklemeden minik şekilde doğrayın ya da mutfak robotundan geçirin.</li>
+                <li>Taze soğanları ve dereotunu ince ince kıyın.Derin bir kase de bütün malzemeleri güzelce harmanlayın.</li>
+                <li>15 dakika kadar buzdolabında bekletin. Ardından yağlı kağıt serili borcama veya fırın kabına aktarın.</li>
+                <li>Fırını 180 derece de ısıtın ve 20 dakika pişirin.</li>
+                <li>Afiyet olsun!</li>
+                
+            </ul>
+        </div>
+        <br>
+        
+
+        
+        
+        
+
+        
+        
+    
+    </section>
+    
+    
+    <section class="comments-section">
+    
+        <!-- Yorumlar Buraya Gelecek -->
+    </section>
+    
+    <footer>
+        <div class="social-media-icons">
+            <a href="#"><img src="img/pngwing.com (3).png" alt="Instagram"></a>
+            <a href="#"><img src="img/pngwing.com (1).png" alt="Facebook"></a>
+            <a href="#"><img src="img/pngwing.com (2).png" alt="Twitter"></a>
+        </div>
+        <div class="contact-form">
+            <h2>İletişime Geçin</h2>
+            <form>
+                <label for="email">E-posta:</label>
+                <input type="email" id="email" name="email" required>
+                <p></p>
+                <label for="message">Mesajınız:</label>
+                <p></p>
+                <textarea id="message" name="message" rows="4" required></textarea>
+                <button type="submit">Gönder</button>
+            </form>
+        </div>
+    </footer>
+    
+    <script>
+        function showLoginForm() {
+           document.getElementById("myModal").style.display="block";
+        }
+        function closeModal() {
+            // Modalı gizle
+            document.getElementById("myModal").style.display = "none";
+        }
+    
+        function submitLogin() {
+            // Burada giriş işlemlerini gerçekleştirebilirsiniz
+            // Örneğin, form verilerini alıp bir API'ye gönderebilirsiniz
+            alert("Giriş başarılı!");
+            closeModal();
+        }
+        window.onclick = function(event) {
+            var modal = document.getElementById("myModal");
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+        
+        function showSignupForm() {
+            // Üye Ol formunu göstermek için gerekli işlemler
+        }
+    
+        function showSignupForm() {
+            document.getElementById("signupModal").style.display = "block";
+        }
+    
+        function closeSignupModal() {
+            document.getElementById("signupModal").style.display = "none";
+        }
+    
+        function submitSignup() {
+            // Burada üye olma işlemlerini gerçekleştirebilirsiniz
+            // Örneğin, form verilerini alıp bir API'ye gönderebilirsiniz
+            alert("Üye olma başarılı!");
+            closeSignupModal();
+        }
+    
+        window.onclick = function(event) {
+            var signupModal = document.getElementById("signupModal");
+            if (event.target === signupModal) {
+                closeSignupModal();
+            }
+        }
+    
+        function corbalarSayfasinaYonlendir(){
+            window.location.href="corbalar.html"
+        }
+        document.getElementById("corbalarLink").addEventListener("click",corbalarSayfasinaYonlendir)
+    
+        function anayemeklerSayfasinaYonlendir(){
+            window.location.href="anayemekler.html"
+        }
+        document.getElementById("anayemeklerLink").addEventListener("click",anayemeklerSayfasinaYonlendir)
+    
+        function tatlilarSayfasinaYonlendir(){
+            window.location.href="tatlilar.html"
+        }
+        document.getElementById("tatlilarLink").addEventListener("click",tatlilarSayfasinaYonlendir)
+    
+        function kahvaltiliklarSayfasinaYonlendir(){
+            window.location.href="kahvaltiliklar.html"
+        }
+        document.getElementById("kahvaltiliklarLink").addEventListener("click",kahvaltiliklarSayfasinaYonlendir)
+    
+        function iceceklerSayfasinaYonlendir(){
+            window.location.href="icecekler.html"
+        }
+        document.getElementById("iceceklerLink").addEventListener("click",iceceklerSayfasinaYonlendir)
+    
+    
+
+        </script>
+
+</body>
+</html>
